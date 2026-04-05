@@ -135,6 +135,7 @@ document.querySelectorAll('[data-folder]').forEach(el => {
 function openFolder(key) {
   const f = folderData[key];
   const popup = document.getElementById('popup');
+  popup.classList.remove('popup-live-mode', 'popup-do-mode', 'popup-live-folder-mode', 'popup-obsessions-mode');
 
   /* Heading + label */
   document.getElementById('popupLabel').textContent  = f.label;
@@ -152,6 +153,9 @@ function openFolder(key) {
 
   if (key === 'live' || key === 'obsessions' || key === 'do') {
     popup.classList.add('popup-live-mode');
+    if (key === 'do') popup.classList.add('popup-do-mode');
+    if (key === 'live') popup.classList.add('popup-live-folder-mode');
+    if (key === 'obsessions') popup.classList.add('popup-obsessions-mode');
     container.className = 'popup-photos live-carousel';
 
     f.imageFiles.forEach((imageFile, i) => {
@@ -208,7 +212,7 @@ function openFolder(key) {
 }
 
 function closeFolder() {
-  document.getElementById('popup').classList.remove('popup-live-mode');
+  document.getElementById('popup').classList.remove('popup-live-mode', 'popup-do-mode', 'popup-live-folder-mode', 'popup-obsessions-mode');
   document.getElementById('overlay').classList.remove('active');
 }
 
