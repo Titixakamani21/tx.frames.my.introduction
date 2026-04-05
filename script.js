@@ -31,7 +31,7 @@ const folderData = {
     bubbleClass: 'bubble-tail-right',
     photos: ['obsession #1', 'obsession #2', 'guilty pleasure'],
     layout: 'layout-c',
-    imageFiles: ['me1.png', 'me2.png', 'me3.png'],
+    imageFiles: ['O1.png', 'O2.png', 'O3.png'],
     imageFit: 'contain'
   }
 };
@@ -150,7 +150,7 @@ function openFolder(key) {
   container.className = 'popup-photos ' + f.layout;
   container.innerHTML = '';
 
-  if (key === 'live') {
+  if (key === 'live' || key === 'obsessions' || key === 'do') {
     popup.classList.add('popup-live-mode');
     container.className = 'popup-photos live-carousel';
 
