@@ -25,14 +25,10 @@ html, body {
   position: fixed;
   inset: 0;
   z-index: 0;
-  background: linear-gradient(165deg, #ddd0ee 0%, #c0b0da 30%, #a8a0cc 60%, #ccc0e0 100%);
-
-  /*
-    Your background image — uncomment and replace:
-    background-image: url('bg.jpg');
-    background-size: cover;
-    background-position: center top;
-  */
+  background-image: url('bg1.png');
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
 }
 
 /* ═══════════════════════════════════
@@ -437,7 +433,7 @@ html, body {
   height: 65vh;
   margin-bottom: 0;
   display: flex;
-  padding: 0 10px;
+  padding: 0 12px;
   box-sizing: border-box;
   overflow-x: auto;
   overflow-y: hidden;
@@ -446,6 +442,7 @@ html, body {
   touch-action: pan-x;
   overscroll-behavior-x: contain;
   scrollbar-width: none;
+  animation: carouselReveal 0.78s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
 .live-carousel::-webkit-scrollbar {
@@ -457,13 +454,46 @@ html, body {
   height: 100%;
   position: relative;
   scroll-snap-align: start;
+  display: flex;
+  align-items: center;
 }
 
 .live-slide-img {
   width: auto;
-  height: 100%;
+  height: 88%;
   display: block;
   object-fit: contain;
+  animation: slideReveal 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.live-slide:nth-child(2) .live-slide-img {
+  animation-delay: 0.08s;
+}
+
+.live-slide:nth-child(3) .live-slide-img {
+  animation-delay: 0.16s;
+}
+
+@keyframes carouselReveal {
+  from {
+    opacity: 0;
+    transform: translateY(28px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideReveal {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 }
 
 /* ── Layout A: straight overlapping row ── */
