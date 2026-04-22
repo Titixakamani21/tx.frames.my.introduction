@@ -18,6 +18,12 @@ html, body {
   background: #b0a8c8;
 }
 
+body.is-intro-active .desktop,
+body.is-intro-active .drag-hint {
+  opacity: 0;
+  pointer-events: none;
+}
+
 /* ═══════════════════════════════════
    BACKGROUND
 ═══════════════════════════════════ */
@@ -40,6 +46,78 @@ html, body {
   z-index: 2;
   width: 100vw;
   height: 100vh;
+  transition: opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.intro-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 24px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1), transform 1s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.intro-screen.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.intro-screen.is-exiting {
+  opacity: 0;
+  transform: scale(1.015);
+}
+
+.intro-copy {
+  max-width: 520px;
+  text-align: center;
+  color: rgba(48, 34, 62, 0.94);
+  text-shadow: 0 1px 14px rgba(255, 255, 255, 0.28);
+  animation: introFloat 2.2s ease-in-out infinite;
+}
+
+.intro-line {
+  font-size: clamp(28px, 6vw, 46px);
+  line-height: 1.15;
+  letter-spacing: 0.01em;
+}
+
+.intro-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.18em;
+  font-style: italic;
+  font-weight: 300;
+  letter-spacing: 0.02em;
+}
+
+.intro-flower {
+  display: inline-block;
+  transform: translateY(-1px);
+}
+
+.intro-typewrap {
+  min-height: 1.5em;
+  margin-top: 14px;
+  font-size: clamp(16px, 3.6vw, 24px);
+  color: rgba(62, 47, 78, 0.82);
+}
+
+.intro-type {
+  white-space: pre-wrap;
+}
+
+.intro-caret {
+  display: inline-block;
+  width: 1px;
+  height: 1.05em;
+  margin-left: 4px;
+  background: rgba(62, 47, 78, 0.75);
+  vertical-align: -0.14em;
+  animation: caretBlink 0.95s step-end infinite;
 }
 
 /* ═══════════════════════════════════
@@ -50,7 +128,7 @@ html, body {
   cursor: grab;
   touch-action: none;
   will-change: left, top;
-  animation: popIn 0.45s cubic-bezier(0.34, 1.4, 0.64, 1) both;
+  animation: popIn 0.85s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
 .el.dragging {
@@ -322,7 +400,7 @@ html, body {
   justify-content: center;
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.26s ease;
+  transition: none;
 }
 
 .overlay.active {
@@ -340,15 +418,17 @@ html, body {
   border-radius: 0;
   padding: 12px 20px 48px;
   box-shadow: none;
-  transform: translateY(100%);
-  transition: transform 0.36s cubic-bezier(0.32, 0.72, 0, 1);
+  transform: none;
+  opacity: 1;
+  transition: none;
   touch-action: pan-y;
   display: flex;
   flex-direction: column;
 }
 
 .overlay.active .folder-popup {
-  transform: translateY(0);
+  transform: none;
+  opacity: 1;
 }
 
 .popup-live-mode {
@@ -418,22 +498,6 @@ html, body {
   padding: 0 20px;
 }
 
-.folder-popup.is-closing .live-carousel {
-  animation: carouselClose 0.38s cubic-bezier(0.4, 0, 0.2, 1) both;
-}
-
-.folder-popup.is-closing .live-slide-img {
-  animation: slideClose 0.34s cubic-bezier(0.4, 0, 0.2, 1) both;
-}
-
-.folder-popup.is-closing .live-slide:nth-child(2) .live-slide-img {
-  animation-delay: 0.03s;
-}
-
-.folder-popup.is-closing .live-slide:nth-child(3) .live-slide-img {
-  animation-delay: 0.06s;
-}
-
 /* ═══════════════════════════════════
    POPUP PHOTO STACK
 ═══════════════════════════════════ */
@@ -486,7 +550,7 @@ html, body {
   touch-action: pan-x;
   overscroll-behavior-x: contain;
   scrollbar-width: none;
-  animation: carouselReveal 0.78s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation: none;
 }
 
 .live-carousel::-webkit-scrollbar {
@@ -507,15 +571,23 @@ html, body {
   height: 88%;
   display: block;
   object-fit: contain;
-  animation: slideReveal 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation: folderPhotoRise 0.68s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
-.live-slide:nth-child(2) .live-slide-img {
-  animation-delay: 0.08s;
+.folder-popup.is-closing .live-carousel {
+  animation: carouselClose 0.55s cubic-bezier(0.4, 0, 0.2, 1) both;
 }
 
-.live-slide:nth-child(3) .live-slide-img {
-  animation-delay: 0.16s;
+.folder-popup.is-closing .live-slide-img {
+  animation: slideClose 0.48s cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+.folder-popup.is-closing .live-slide:nth-child(2) .live-slide-img {
+  animation-delay: 0.03s;
+}
+
+.folder-popup.is-closing .live-slide:nth-child(3) .live-slide-img {
+  animation-delay: 0.06s;
 }
 
 .popup-do-mode .live-slide:nth-child(1) .live-slide-img {
@@ -539,7 +611,7 @@ html, body {
 @keyframes carouselReveal {
   from {
     opacity: 0;
-    transform: translateY(28px);
+    transform: translateY(34px);
   }
   to {
     opacity: 1;
@@ -550,11 +622,44 @@ html, body {
 @keyframes slideReveal {
   from {
     opacity: 0;
-    transform: translateY(20px) scale(0.985);
+    transform: translateY(26px) scale(0.99);
   }
   to {
     opacity: 1;
     transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes carouselClose {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(26px);
+  }
+}
+
+@keyframes slideClose {
+  from {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(18px) scale(0.99);
+  }
+}
+
+@keyframes folderPhotoRise {
+  from {
+    opacity: 0;
+    transform: translateY(28px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
@@ -708,8 +813,18 @@ html, body {
    ENTRY ANIMATION
 ═══════════════════════════════════ */
 @keyframes popIn {
-  from { opacity: 0; transform: scale(0.90); }
+  from { opacity: 0; transform: translateY(18px) scale(0.96); }
   to   { opacity: 1; transform: scale(1); }
+}
+
+@keyframes introFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+@keyframes caretBlink {
+  0%, 45% { opacity: 1; }
+  46%, 100% { opacity: 0; }
 }
 
 .intro-video {

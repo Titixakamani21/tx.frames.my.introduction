@@ -36,6 +36,33 @@ const folderData = {
   }
 };
 
+const introScreen = document.getElementById('introScreen');
+const introType = document.getElementById('introType');
+const introMessage = 'Welcome to my digital life.';
+
+document.body.classList.add('is-intro-active');
+
+if (introScreen && introType) {
+  let introIndex = 0;
+  const typeInterval = window.setInterval(() => {
+    introType.textContent = introMessage.slice(0, introIndex + 1);
+    introIndex += 1;
+
+    if (introIndex >= introMessage.length) {
+      window.clearInterval(typeInterval);
+    }
+  }, 70);
+
+  window.setTimeout(() => {
+    introScreen.classList.add('is-exiting');
+  }, 2400);
+
+  window.setTimeout(() => {
+    introScreen.classList.remove('active', 'is-exiting');
+    document.body.classList.remove('is-intro-active');
+  }, 3000);
+}
+
 /* ═══════════════════════════════════════════════════
    DRAG SYSTEM
    Makes every .el element freely draggable via touch or mouse.
@@ -214,13 +241,8 @@ function openFolder(key) {
 function closeFolder() {
   const popup = document.getElementById('popup');
   const overlay = document.getElementById('overlay');
-
-  popup.classList.add('is-closing');
-
-  window.setTimeout(() => {
-    popup.classList.remove('is-closing', 'popup-live-mode', 'popup-do-mode', 'popup-live-folder-mode', 'popup-obsessions-mode');
-    overlay.classList.remove('active');
-  }, 420);
+  popup.classList.remove('is-closing', 'popup-live-mode', 'popup-do-mode', 'popup-live-folder-mode', 'popup-obsessions-mode');
+  overlay.classList.remove('active');
 }
 
 /* Close on overlay tap */
