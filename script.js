@@ -38,7 +38,7 @@ const folderData = {
 
 const introScreen = document.getElementById('introScreen');
 const introType = document.getElementById('introType');
-const introMessage = 'Welcome to my digital life.';
+const introMessage = 'Welcome to my digital scrapbook.';
 
 document.body.classList.add('is-intro-active');
 
