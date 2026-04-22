@@ -212,8 +212,15 @@ function openFolder(key) {
 }
 
 function closeFolder() {
-  document.getElementById('popup').classList.remove('popup-live-mode', 'popup-do-mode', 'popup-live-folder-mode', 'popup-obsessions-mode');
-  document.getElementById('overlay').classList.remove('active');
+  const popup = document.getElementById('popup');
+  const overlay = document.getElementById('overlay');
+
+  popup.classList.add('is-closing');
+
+  window.setTimeout(() => {
+    popup.classList.remove('is-closing', 'popup-live-mode', 'popup-do-mode', 'popup-live-folder-mode', 'popup-obsessions-mode');
+    overlay.classList.remove('active');
+  }, 420);
 }
 
 /* Close on overlay tap */
